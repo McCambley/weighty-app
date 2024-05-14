@@ -1,5 +1,5 @@
 import { Slot } from "expo-router";
-import { Text, View } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 import { Link } from "expo-router";
 
 interface RootLayoutProps {
@@ -24,10 +24,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
           gap: 8,
         }}
       >
-        <Link style={{ fontSize: 24 }} href="/calculator">
+        <Link style={styles.link} href="/calculator">
           Calculator
         </Link>
-        <Link style={{ fontSize: 24 }} href="/builder">
+        <Link style={styles.link} href="/builder">
           Builder
         </Link>
       </View>
@@ -35,3 +35,13 @@ export default function RootLayout({ children }: RootLayoutProps) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  link: {
+    fontSize: 24,
+    padding: 4,
+    paddingHorizontal: 16,
+    borderWidth: 1,
+    borderRadius: 10,
+  },
+});
