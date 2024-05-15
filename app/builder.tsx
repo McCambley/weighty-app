@@ -1,8 +1,5 @@
 import { View, Text } from "react-native";
-export default function Builder() {
-  return (
-    <View>
-      <Text>Builder</Text>
-    </View>
-  );
+import Builder from "@/components/Builder";
+export default function BuilderLayout() {
+  return <Builder />;
 }

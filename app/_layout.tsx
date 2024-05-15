@@ -14,6 +14,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
         justifyContent: "center",
         alignItems: "center",
         minHeight: "100%",
+        paddingTop: 40,
+        paddingBottom: 40,
       }}
     >
       <Text style={{ fontSize: 32, fontWeight: "bold" }}>Plates</Text>
