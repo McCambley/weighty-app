@@ -48,7 +48,9 @@ export default function Calculator(): JSX.Element {
       }}
     >
       <Text style={{ fontSize: 16 }}>Plates</Text>
-      <Text style={{ fontSize: 16 }}>Bar Weight</Text>
+      <Text style={{ fontSize: 16, fontFamily: "RobotoSlab-Bold" }}>
+        Bar Weight
+      </Text>
       <View style={{ display: "flex", flexDirection: "row", gap: 8 }}>
         <Pressable
           style={[
