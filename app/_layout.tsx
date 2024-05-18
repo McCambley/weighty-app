@@ -1,5 +1,5 @@
 import { Slot } from "expo-router";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Dimensions } from "react-native";
 import { Link, usePathname } from "expo-router";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
@@ -23,6 +23,8 @@ interface RootLayoutProps {
 }
 
 export default function RootLayout({ children }: RootLayoutProps) {
+  const width = Dimensions.get("window").width; //full width
+  const height = Dimensions.get("window").height; //full height
   const [fontsLoaded, fontError] = useFonts({
     "RobotoSlab-Black": require("../assets/fonts/RobotoSlab-Black.ttf"),
     "RobotoSlab-Bold": require("../assets/fonts/RobotoSlab-Bold.ttf"),
@@ -47,7 +49,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { minHeight: height, minWidth: width }]}>
       <ThemedText style={styles.title} type="title">
         Plates
       </ThemedText>
@@ -90,8 +92,7 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "flex-start",
     alignItems: "center",
-    minHeight: "100%",
-    paddingTop: 80,
+    paddingTop: 64,
     paddingBottom: 40,
     backgroundColor: Colors.dark.black,
   },
