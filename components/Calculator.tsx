@@ -1,5 +1,7 @@
-import { Text, View, TextInput, Pressable, StyleSheet } from "react-native";
+import { View, TextInput, Pressable, StyleSheet } from "react-native";
 import { useState, useEffect } from "react";
+import { ThemedText } from "./ThemedText";
+import { Colors } from "@/constants/Colors";
 
 type PlateValue = 45 | 35 | 25 | 10 | 5 | 2.5;
 type PlateTotal = { weight: number; count: number };
@@ -47,42 +49,42 @@ export default function Calculator(): JSX.Element {
         alignItems: "center",
       }}
     >
-      <Text style={{ fontSize: 16 }}>Plates</Text>
-      <Text style={{ fontSize: 16, fontFamily: "RobotoSlab-Bold" }}>
+      <ThemedText style={{ fontSize: 16 }}>Plates</ThemedText>
+      <ThemedText style={{ fontSize: 16, fontFamily: "RobotoSlab-Bold" }}>
         Bar Weight
-      </Text>
+      </ThemedText>
       <View style={{ display: "flex", flexDirection: "row", gap: 8 }}>
         <Pressable
           style={[
             styles.button,
-            { backgroundColor: barWeight === 45 ? "red" : "white" },
+            { backgroundColor: barWeight === 45 ? Colors.dark.light : "" },
           ]}
           onPress={() => setBarWeight(45)}
         >
-          <Text>45</Text>
+          <ThemedText>45</ThemedText>
         </Pressable>
         <Pressable
           style={[
             styles.button,
-            { backgroundColor: barWeight === 20 ? "red" : "white" },
+            { backgroundColor: barWeight === 20 ? Colors.dark.light : "" },
           ]}
           onPress={() => setBarWeight(20)}
         >
-          <Text>20</Text>
+          <ThemedText>20</ThemedText>
         </Pressable>
         <Pressable
           style={[
             styles.button,
-            { backgroundColor: barWeight === 0 ? "red" : "white" },
+            { backgroundColor: barWeight === 0 ? Colors.dark.light : "" },
           ]}
           onPress={() => setBarWeight(0)}
         >
-          <Text>0</Text>
+          <ThemedText>0</ThemedText>
         </Pressable>
       </View>
-      <Text style={{ fontSize: 16 }}>Target Weight</Text>
+      <ThemedText style={{ fontSize: 16 }}>Target Weight</ThemedText>
       <TextInput
-        keyboardType="numeric"
+        inputMode="numeric"
         style={{
           borderWidth: 1,
           paddingTop: 2,
@@ -90,6 +92,7 @@ export default function Calculator(): JSX.Element {
           paddingLeft: 16,
           paddingRight: 16,
           borderRadius: 10,
+          fontFamily: "RobotoSlab-Regular",
         }}
         placeholder="hello"
         value={inputValue}
@@ -97,9 +100,9 @@ export default function Calculator(): JSX.Element {
       />
       {weightTotals.map((weight) => {
         return (
-          <Text key={weight.weight}>
+          <ThemedText key={weight.weight}>
             {weight.weight}: {weight.count}
-          </Text>
+          </ThemedText>
         );
       })}
     </View>
@@ -122,6 +125,6 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
     paddingRight: 16,
     borderRadius: 10,
-    backgroundColor: "red",
+    backgroundColor: Colors.dark.dark,
   },
 });

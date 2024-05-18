@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ThemedText } from "./ThemedText";
 import {
   View,
   Text,
@@ -31,7 +32,7 @@ export default function Builder() {
 
   return (
     <>
-      <Text style={{}}>{total}</Text>
+      <ThemedText style={{}}>{total}</ThemedText>
       <Picker
         style={styles.dropdown}
         selectedValue={barWeight}
@@ -49,15 +50,15 @@ export default function Builder() {
               key={plate}
               onPress={handleButtonPress(plate)}
             >
-              <Text style={styles.buttonText}>{plate}</Text>
+              <ThemedText style={styles.buttonText}>{plate}</ThemedText>
             </Pressable>
           );
         })}
       </View>
       <Pressable style={styles.clearButton}>
-        <Text style={styles.buttonText} onPress={clearValues}>
+        <ThemedText style={styles.buttonText} onPress={clearValues}>
           Clear
-        </Text>
+        </ThemedText>
       </Pressable>
     </>
   );

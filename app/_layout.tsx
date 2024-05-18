@@ -1,9 +1,10 @@
 import { Slot } from "expo-router";
-import { Text, View, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { Link } from "expo-router";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import React, { useCallback } from "react";
+import { ThemedText } from "@/components/ThemedText";
 
 // const getData = async () => {
 //   try {
@@ -39,6 +40,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
     }
   }, [fontsLoaded, fontError]);
 
+  if (!fontsLoaded && !fontError) {
+    return null;
+  }
+
   return (
     <View
       style={{
@@ -51,7 +56,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         backgroundColor: "rgba(194, 97, 252, 0.15)",
       }}
     >
-      <Text
+      <ThemedText
         style={{
           fontSize: 32,
           fontWeight: "bold",
@@ -59,7 +64,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         }}
       >
         Plates
-      </Text>
+      </ThemedText>
       <View
         style={{
           display: "flex",
@@ -68,10 +73,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
         }}
       >
         <Link style={styles.link} href="/calculator">
-          Calculator
+          <ThemedText>Calculator</ThemedText>
         </Link>
         <Link style={styles.link} href="/builder">
-          Builder
+          <ThemedText>Builder</ThemedText>
         </Link>
       </View>
       <Slot />
