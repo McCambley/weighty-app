@@ -42,13 +42,7 @@ export default function Calculator(): JSX.Element {
     setWeightTotals(totals);
   }
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
+    <View style={styles.container}>
       <ThemedText style={{ fontSize: 16 }}>Plates</ThemedText>
       <ThemedText style={{ fontSize: 16, fontFamily: "RobotoSlab-Bold" }}>
         Bar Weight
@@ -85,15 +79,7 @@ export default function Calculator(): JSX.Element {
       <ThemedText style={{ fontSize: 16 }}>Target Weight</ThemedText>
       <TextInput
         inputMode="numeric"
-        style={{
-          borderWidth: 1,
-          paddingTop: 2,
-          paddingBottom: 2,
-          paddingLeft: 16,
-          paddingRight: 16,
-          borderRadius: 10,
-          fontFamily: "RobotoSlab-Regular",
-        }}
+        style={styles.textInput}
         placeholder="hello"
         value={inputValue}
         onChangeText={handleInputChange}
@@ -110,6 +96,11 @@ export default function Calculator(): JSX.Element {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    // flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   button: {
     borderWidth: 1,
     paddingTop: 2,
@@ -126,5 +117,14 @@ const styles = StyleSheet.create({
     paddingRight: 16,
     borderRadius: 10,
     backgroundColor: Colors.dark.dark,
+  },
+  textInput: {
+    borderWidth: 1,
+    paddingTop: 2,
+    paddingBottom: 2,
+    paddingLeft: 16,
+    paddingRight: 16,
+    borderRadius: 10,
+    fontFamily: "RobotoSlab-Regular",
   },
 });

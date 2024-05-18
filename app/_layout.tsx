@@ -5,6 +5,7 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import React, { useCallback } from "react";
 import { ThemedText } from "@/components/ThemedText";
+import { Colors } from "@/constants/Colors";
 
 // const getData = async () => {
 //   try {
@@ -45,33 +46,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
   }
 
   return (
-    <View
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        minHeight: "100%",
-        paddingTop: 40,
-        paddingBottom: 40,
-        backgroundColor: "rgba(194, 97, 252, 0.15)",
-      }}
-    >
-      <ThemedText
-        style={{
-          fontSize: 32,
-          fontWeight: "bold",
-          fontFamily: "RobotoSlab-Regular",
-        }}
-      >
-        Plates
-      </ThemedText>
-      <View
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          gap: 8,
-        }}
-      >
+    <View style={styles.container}>
+      <ThemedText type="title">Plates</ThemedText>
+      <View style={styles.navigation}>
         <Link style={styles.link} href="/calculator">
           <ThemedText>Calculator</ThemedText>
         </Link>
@@ -91,5 +68,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderWidth: 1,
     borderRadius: 10,
+  },
+  container: {
+    display: "flex",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    minHeight: "100%",
+    paddingTop: 80,
+    paddingBottom: 40,
+    backgroundColor: Colors.dark.black,
+  },
+  navigation: {
+    display: "flex",
+    flexDirection: "row",
+    gap: 8,
   },
 });
