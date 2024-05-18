@@ -4,14 +4,13 @@ import { ThemedText } from "./ThemedText";
 import { Colors } from "@/constants/Colors";
 
 type PlateValue = 45 | 35 | 25 | 10 | 5 | 2.5;
-type PlateTotal = { weight: number; count: number };
+type PlateTotal = { weight: PlateValue; count: number };
 const plateOptions: PlateValue[] = [45, 35, 25, 10, 5, 2.5];
 
 export default function Calculator(): JSX.Element {
   const [inputValue, setInputValue] = useState<string>("");
   const [barWeight, setBarWeight] = useState<number>(45);
   const [weightTotals, setWeightTotals] = useState<PlateTotal[]>([]);
-  console.log(weightTotals);
   useEffect(() => {
     calculatePlates();
   }, [inputValue, barWeight]);
@@ -41,56 +40,67 @@ export default function Calculator(): JSX.Element {
     }
     setWeightTotals(totals);
   }
+
   return (
     <View style={styles.container}>
-      <ThemedText style={{ fontSize: 16 }}>Plates</ThemedText>
-      <ThemedText style={{ fontSize: 16, fontFamily: "RobotoSlab-Bold" }}>
-        Bar Weight
-      </ThemedText>
-      <View style={{ display: "flex", flexDirection: "row", gap: 8 }}>
+      <ThemedText style={styles.pageTitle}>Bar Weight (lbs.)</ThemedText>
+      <View style={styles.buttonGrid}>
         <Pressable
-          style={[
-            styles.button,
-            { backgroundColor: barWeight === 45 ? Colors.dark.light : "" },
-          ]}
+          style={[styles.button, barWeight === 45 && styles.buttonSelected]}
           onPress={() => setBarWeight(45)}
         >
-          <ThemedText>45</ThemedText>
+          <ThemedText style={barWeight === 45 && styles.buttonSelectedText}>
+            45
+          </ThemedText>
         </Pressable>
         <Pressable
-          style={[
-            styles.button,
-            { backgroundColor: barWeight === 20 ? Colors.dark.light : "" },
-          ]}
+          style={[styles.button, barWeight === 20 && styles.buttonSelected]}
           onPress={() => setBarWeight(20)}
         >
-          <ThemedText>20</ThemedText>
+          <ThemedText style={barWeight === 20 && styles.buttonSelectedText}>
+            20
+          </ThemedText>
         </Pressable>
         <Pressable
-          style={[
-            styles.button,
-            { backgroundColor: barWeight === 0 ? Colors.dark.light : "" },
-          ]}
+          style={[styles.button, barWeight === 0 && styles.buttonSelected]}
           onPress={() => setBarWeight(0)}
         >
-          <ThemedText>0</ThemedText>
+          <ThemedText style={barWeight === 0 && styles.buttonSelectedText}>
+            0
+          </ThemedText>
         </Pressable>
       </View>
-      <ThemedText style={{ fontSize: 16 }}>Target Weight</ThemedText>
+      <ThemedText style={{ paddingBottom: 16 }}>
+        Target Weight (lbs.)
+      </ThemedText>
       <TextInput
         inputMode="numeric"
         style={styles.textInput}
-        placeholder="hello"
+        placeholder="Enter target weight"
         value={inputValue}
         onChangeText={handleInputChange}
+        placeholderTextColor={Colors.dark.light}
       />
-      {weightTotals.map((weight) => {
-        return (
-          <ThemedText key={weight.weight}>
-            {weight.weight}: {weight.count}
-          </ThemedText>
-        );
-      })}
+      <View style={styles.plateGrid}>
+        {weightTotals.map((weight): JSX.Element[] =>
+          new Array(weight.count).fill(0).map((plate, index) => (
+            <ThemedText
+              style={[
+                styles.plate,
+                {
+                  height:
+                    (plateOptions.length -
+                      plateOptions.indexOf(weight.weight)) *
+                    20,
+                },
+              ]}
+              key={index}
+            >
+              {weight.weight}
+            </ThemedText>
+          ))
+        )}
+      </View>
     </View>
   );
 }
@@ -101,30 +111,67 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  pageTitle: {
+    fontSize: 16,
+    fontFamily: "RobotoSlab-Bold",
+    paddingBottom: 16,
+  },
+  buttonGrid: {
+    display: "flex",
+    flexDirection: "row",
+    gap: 16,
+    paddingBottom: 16,
+  },
   button: {
     borderWidth: 1,
-    paddingTop: 2,
-    paddingBottom: 2,
+    paddingTop: 4,
+    paddingBottom: 4,
     paddingLeft: 16,
     paddingRight: 16,
     borderRadius: 10,
+    borderColor: Colors.dark.light,
   },
   buttonSelected: {
-    borderWidth: 1,
-    paddingTop: 2,
-    paddingBottom: 2,
-    paddingLeft: 16,
-    paddingRight: 16,
-    borderRadius: 10,
-    backgroundColor: Colors.dark.dark,
+    backgroundColor: Colors.dark.light,
+  },
+  buttonSelectedText: {
+    color: Colors.dark.dark,
   },
   textInput: {
     borderWidth: 1,
-    paddingTop: 2,
-    paddingBottom: 2,
+    paddingTop: 8,
+    paddingBottom: 8,
     paddingLeft: 16,
     paddingRight: 16,
     borderRadius: 10,
+    borderColor: Colors.dark.light,
     fontFamily: "RobotoSlab-Regular",
+    color: Colors.dark.white,
+    width: 200,
+    maxWidth: "100%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  plateGrid: {
+    display: "flex",
+    flexDirection: "row",
+    flexWrap: "nowrap",
+    gap: 2,
+    justifyContent: "flex-start",
+    alignItems: "center",
+    paddingTop: 16,
+    width: "100%",
+  },
+  plate: {
+    borderWidth: 1,
+    borderRadius: 10,
+    padding: 4,
+    width: 32,
+    borderColor: Colors.dark.light,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    minHeight: 32,
   },
 });

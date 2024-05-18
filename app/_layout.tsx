@@ -1,6 +1,6 @@
 import { Slot } from "expo-router";
 import { View, StyleSheet } from "react-native";
-import { Link } from "expo-router";
+import { Link, usePathname } from "expo-router";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import React, { useCallback } from "react";
@@ -34,7 +34,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
     "RobotoSlab-SemiBold": require("../assets/fonts/RobotoSlab-SemiBold.ttf"),
     "RobotoSlab-Thin": require("../assets/fonts/RobotoSlab-Thin.ttf"),
   });
-
+  const path = usePathname();
+  console.log(path);
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded || fontError) {
       await SplashScreen.hideAsync();
@@ -47,12 +48,23 @@ export default function RootLayout({ children }: RootLayoutProps) {
 
   return (
     <View style={styles.container}>
-      <ThemedText type="title">Plates</ThemedText>
+      <ThemedText style={styles.title} type="title">
+        Plates
+      </ThemedText>
       <View style={styles.navigation}>
-        <Link style={styles.link} href="/calculator">
+        <Link
+          style={[
+            styles.link,
+            path === "/calculator" || path === "/" ? styles.activeLink : null,
+          ]}
+          href="/calculator"
+        >
           <ThemedText>Calculator</ThemedText>
         </Link>
-        <Link style={styles.link} href="/builder">
+        <Link
+          style={[styles.link, path === "/builder" && styles.activeLink]}
+          href="/builder"
+        >
           <ThemedText>Builder</ThemedText>
         </Link>
       </View>
@@ -62,12 +74,17 @@ export default function RootLayout({ children }: RootLayoutProps) {
 }
 
 const styles = StyleSheet.create({
+  title: {
+    marginBottom: 16,
+  },
   link: {
     fontSize: 24,
     padding: 4,
-    paddingHorizontal: 16,
-    borderWidth: 1,
-    borderRadius: 10,
+    paddingHorizontal: 8,
+  },
+  activeLink: {
+    borderBottomColor: Colors.dark.white,
+    borderBottomWidth: 1,
   },
   container: {
     display: "flex",
@@ -81,6 +98,7 @@ const styles = StyleSheet.create({
   navigation: {
     display: "flex",
     flexDirection: "row",
-    gap: 8,
+    gap: 16,
+    marginBottom: 16,
   },
 });
