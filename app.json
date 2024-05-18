@@ -1,7 +1,10 @@
 {
   "expo": {
     "name": "weighty-app",
-    "slug": "weighty-app",
+    "slug": "",
+    "platforms": [
+      "web"
+    ],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/apple-touch-icon.png",
