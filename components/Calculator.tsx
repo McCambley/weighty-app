@@ -1,4 +1,4 @@
-import { View, TextInput, Pressable, StyleSheet } from "react-native";
+import { View, TextInput, Pressable, StyleSheet, Animated } from "react-native";
 import { useState, useEffect } from "react";
 import { ThemedText } from "./ThemedText";
 import { Colors } from "@/constants/Colors";
@@ -11,9 +11,32 @@ export default function Calculator(): JSX.Element {
   const [inputValue, setInputValue] = useState<string>("");
   const [barWeight, setBarWeight] = useState<number>(45);
   const [weightTotals, setWeightTotals] = useState<PlateTotal[]>([]);
+  // Step 3: Create an Animated.Value for each weight
+  const flatWeights: PlateTotal[] = weightTotals.flatMap((weight) =>
+    new Array(weight.count).fill(weight)
+  );
+  const animatedValues = flatWeights.map(() => new Animated.Value(0));
   useEffect(() => {
     calculatePlates();
   }, [inputValue, barWeight]);
+
+  // Step 4: Animate the values
+  animatedValues.forEach((value, index) => {
+    const toValue = Math.max(
+      (plateOptions.length - plateOptions.indexOf(flatWeights[index].weight)) *
+        20,
+      32
+    );
+    Animated.sequence([
+      Animated.delay(25 * index),
+      Animated.spring(value, {
+        toValue,
+        bounciness: 20,
+        speed: 20,
+        useNativeDriver: false,
+      }),
+    ]).start();
+  });
 
   function handleInputChange(text: string): void {
     if (!isNaN(Number(text))) {
@@ -82,24 +105,24 @@ export default function Calculator(): JSX.Element {
         placeholderTextColor={Colors.dark.light}
       />
       <View style={styles.plateGrid}>
-        {weightTotals.map((weight): JSX.Element[] =>
-          new Array(weight.count).fill(0).map((plate, index) => (
-            <ThemedText
-              style={[
-                styles.plate,
-                {
-                  height:
-                    (plateOptions.length -
-                      plateOptions.indexOf(weight.weight)) *
-                    20,
-                },
-              ]}
-              key={index}
-            >
-              {weight.weight}
-            </ThemedText>
-          ))
-        )}
+        {weightTotals
+          .flatMap((weight, _) => new Array(weight.count).fill(weight))
+          .map((weight: PlateTotal, index: number) => {
+            return (
+              <Animated.Text
+                style={[
+                  styles.plate,
+                  {
+                    color: Colors.dark.light,
+                    height: animatedValues[index],
+                  },
+                ]}
+                key={index}
+              >
+                {weight.weight}
+              </Animated.Text>
+            );
+          })}
       </View>
     </View>
   );
@@ -107,7 +130,6 @@ export default function Calculator(): JSX.Element {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -161,17 +183,20 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     paddingTop: 16,
-    width: "100%",
+    alignSelf: "stretch",
+    minHeight: 120,
   },
   plate: {
     borderWidth: 1,
     borderRadius: 10,
-    padding: 4,
     width: 32,
     borderColor: Colors.dark.light,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    minHeight: 32,
+    textAlign: "center",
+    verticalAlign: "middle",
+    fontSize: 16,
+    overflow: "hidden",
   },
 });
