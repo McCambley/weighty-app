@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "weighty-app",
-    "slug": "",
+    "slug": "weighty-app",
     "platforms": [
       "web"
     ],
