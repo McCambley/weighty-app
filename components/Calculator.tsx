@@ -1,7 +1,17 @@
-import { View, TextInput, Pressable, StyleSheet, Animated } from "react-native";
+import {
+  View,
+  TextInput,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Animated,
+  Dimensions,
+} from "react-native";
 import { useState, useEffect } from "react";
 import { ThemedText } from "./ThemedText";
 import { Colors } from "@/constants/Colors";
+
+const { width } = Dimensions.get("window");
 
 type PlateValue = 45 | 35 | 25 | 10 | 5 | 2.5;
 type PlateTotal = { weight: PlateValue; count: number };
@@ -40,7 +50,11 @@ export default function Calculator(): JSX.Element {
 
   function handleInputChange(text: string): void {
     if (!isNaN(Number(text))) {
-      setInputValue(text);
+      if (!(Number(text) >= 10000)) {
+        setInputValue(text);
+      } else {
+        alert("Chill!");
+      }
     }
   }
 
@@ -104,7 +118,11 @@ export default function Calculator(): JSX.Element {
         onChangeText={handleInputChange}
         placeholderTextColor={Colors.dark.light}
       />
-      <View style={styles.plateGrid}>
+      <ScrollView
+        horizontal
+        style={{ maxWidth: width }}
+        contentContainerStyle={styles.plateGrid}
+      >
         {weightTotals
           .flatMap((weight, _) => new Array(weight.count).fill(weight))
           .map((weight: PlateTotal, index: number) => {
@@ -115,6 +133,8 @@ export default function Calculator(): JSX.Element {
                   {
                     color: Colors.dark.light,
                     height: animatedValues[index],
+                    // width: animatedValues[index],
+                    opacity: animatedValues[index],
                   },
                 ]}
                 key={index}
@@ -123,7 +143,7 @@ export default function Calculator(): JSX.Element {
               </Animated.Text>
             );
           })}
-      </View>
+      </ScrollView>
     </View>
   );
 }
@@ -176,6 +196,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   plateGrid: {
+    maxWidth: "100%",
     display: "flex",
     flexDirection: "row",
     flexWrap: "nowrap",
@@ -190,6 +211,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     width: 32,
+    minWidth: 32,
     borderColor: Colors.dark.light,
     display: "flex",
     justifyContent: "center",
